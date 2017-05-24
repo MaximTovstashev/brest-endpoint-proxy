@@ -38,8 +38,9 @@ function requestEndpoint(endpoint_name, settings, callback) {
           const proxied_url = settings.url + settings.prefix + '/' + endpoint_name + '/' + (endpoint.uri ? endpoint.uri : '');
           const proxy_middle = requestProxy(settings.url, {
             proxyReqPathResolver: function (req) {
+              const url_parts = url.parse(req.url, true);
               const path = settings.prefix + '/' + endpoint_name + (endpoint.uri ? '/' + endpoint.uri : '');
-              return Object.keys(req.params).reduce((str, param) => str.replace(`:${param}`, req.params[param]), path);
+              return Object.keys(req.params).reduce((str, param) => str.replace(`:${param}`, req.params[param]), path) + url_parts.search;
             }
           });
           endpoint.middle = [proxy_middle];
