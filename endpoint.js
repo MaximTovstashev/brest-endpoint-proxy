@@ -5,6 +5,7 @@ module.exports = function(brest) {
     endpoints: [{
       method: 'GET',
       uri: ':endpoint',
+      noAuth: true,
       handler: function(req, callback) {
         if (req.headers['x-brest-proxy-key'] !== brest.getSetting('proxy.key')) return callback({error: 'Incorrect proxy key', code: HTTP_UNAUTHORIZED});
         if (!req.params.endpoint) return callback({error: 'Missing endpoint name'});
